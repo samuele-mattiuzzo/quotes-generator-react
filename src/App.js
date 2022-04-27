@@ -2,17 +2,23 @@ import React, { useEffect, useState } from "react";
 import './App.css';
 
 
-const randomUrl = "https://api.quotable.io/random";
+const randomUrl = "https://api.quotable.io/random?tags=";
 const tagsUrl = "https://api.quotable.io/tags?sortBy=quoteCount&order=desc";
 
 function App() {
+
+  const [tag, setSelectedTag] = useState('');
 
   const [quotes, setQuotes] = useState([]);
 
   const [tags, setTags] = useState([]);
 
+  const getUrl = () => {
+    return randomUrl + tag;
+  }
+
   const getQuote = () => {
-    fetch(randomUrl)
+    fetch(getUrl())
     .then((response) => response.json())
     .then((data) => setQuotes(data));
   }
@@ -21,6 +27,11 @@ function App() {
     fetch(tagsUrl)
     .then((response) => response.json())
     .then((data) => setTags(data));
+  }
+
+  const handleTagChange = (e) => {
+    setSelectedTag(e.target.value);
+    getQuote();
   }
 
   useEffect(() => {
@@ -37,27 +48,23 @@ function App() {
   return (
     <div className="main">
       <header className="content">
-
-        <select>
-        <option
-              key="all"
-              value=""
-            >
-              all
-            </option>
+        
+        <select
+          onChange={e => handleTagChange(e)}
+        >
+          <option key="---" value="">
+              select tag
+          </option>
           {tags.map(tag => (
-            <option
-              key={tag.name}
-              value={tag.name}
-            >
+            <option key={tag.name} value={tag.name}>
               {tag.name} ({tag.quoteCount} quotes)
             </option>
           ))}
         </select>
 
-        <div class="blockquote">
+        <div className="blockquote">
           <p>{content}</p>
-          <p class="author">{author}</p>
+          <p className="author">{author}</p>
         </div>
         <button className="link"
           onClick={nextQuote}
