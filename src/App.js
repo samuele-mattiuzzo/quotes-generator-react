@@ -37,6 +37,7 @@ function App() {
   useEffect(() => {
     getQuote();
     getTags();
+    // eslint-disable-next-line
   }, []);
 
   const nextQuote = () => {
