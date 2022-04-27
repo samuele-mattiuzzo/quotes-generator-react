@@ -52,3 +52,11 @@
   display: block;
   font-style: italic;
 }
+
+select {
+  background-color: #282c34;
+  padding: 0.5em 4px;
+  color: white;
+  border: 1px solid white;
+  text-align: center;
+}
